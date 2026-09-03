@@ -264,7 +264,7 @@ Smart-Exam-Hall-Monitoring-System/
 
 ├── system\_architecture.png
 
-├── project\_images/
+├── project_images/
 
 │   ├── keypad\_and\_display.jpg
 
@@ -302,7 +302,7 @@ Smart-Exam-Hall-Monitoring-System/
 
 | `system\_architecture.png`                             | System architecture diagram                                            |
 
-| `images/`                                             | Real project hardware and demonstration images                         |
+| `project_images/`                                             | Real project hardware and demonstration images                         |
 
 | `README.md`                                           | Project documentation                                                  |
 
