@@ -26,53 +26,25 @@ The system allows the user to configure examination parameters, monitor examinat
 
 
 
-\- Provide controlled examination session management.
+\* Provide controlled examination session management.
 
-\- Allow authorized users to configure examination settings.
+\* Allow authorized users to configure examination settings.
 
-\- Display real-time clock and date information.
+\* Display real-time clock and date information.
 
-\- Set examination start time and duration.
+\* Set examination start time and duration.
 
-\- Display remaining examination time.
+\* Display remaining examination time.
 
-\- Monitor temperature using an LM35 sensor.
+\* Monitor temperature using an LM35 sensor.
 
-\- Provide pause/resume functionality using an external interrupt.
+\* Provide pause/resume functionality using an external interrupt.
 
-\- Provide LED warnings as examination time decreases.
+\* Provide LED warnings as examination time decreases.
 
-\- Activate a buzzer when the examination time expires.
+\* Activate a buzzer when the examination time expires.
 
-\- Protect configuration settings using a password.
-
-
-
-\---
-
-
-
-\## ⚙️ Hardware Used
-
-
-
-\- LPC2148 ARM7 microcontroller
-
-\- 16×2 LCD
-
-\- 4×4 matrix keypad
-
-\- RTC
-
-\- LM35 temperature sensor
-
-\- ADC
-
-\- Two-digit multiplexed 7-segment display
-
-\- LEDs
-
-\- Buzzer
+\* Protect configuration settings using a password.
 
 
 
@@ -80,31 +52,285 @@ The system allows the user to configure examination parameters, monitor examinat
 
 
 
-\## 💻 Software and Technologies
+\## ⚙️ Hardware Requirements
 
 
 
-\- Embedded C
+\* LPC2148 ARM7 microcontroller
 
-\- ARM7 / LPC2148
+\* 16×2 LCD
 
-\- Keil µVision
+\* 4×4 matrix keypad
 
-\- GPIO
+\* Real-Time Clock (RTC)
 
-\- ADC
+\* LM35 temperature sensor
 
-\- RTC
+\* ADC
 
-\- External Interrupts
+\* Two-digit multiplexed 7-segment display
 
-\- LCD interfacing
+\* LEDs
 
-\- Keypad interfacing
+\* Buzzer
 
-\- 7-segment interfacing
+\* External interrupt switches
 
-\- Register-level programming
+\* Connecting wires / breadboard or project hardware setup
+
+\* Suitable power supply
+
+
+
+\---
+
+
+
+\## 💻 Software Requirements
+
+
+
+\* Embedded C
+
+\* ARM7 / LPC2148
+
+\* Keil µVision IDE
+
+\* ARM7 compiler/toolchain
+
+\* GPIO programming
+
+\* ADC programming
+
+\* RTC programming
+
+\* External interrupt programming
+
+\* LCD interfacing
+
+\* Keypad interfacing
+
+\* 7-segment interfacing
+
+\* Register-level programming
+
+\* VIC interrupt controller
+
+
+
+\---
+
+
+
+\## 🧩 System Architecture
+
+
+
+!\[System Architecture](system\_architecture.png)
+
+
+
+The LPC2148 acts as the main controller and interfaces with the LCD, keypad, RTC, ADC, LM35 temperature sensor, external interrupt, multiplexed 7-segment display, LEDs, and buzzer.
+
+
+
+```text
+
+&#x20;                        ┌─────────────┐
+
+&#x20;                        │   LPC2148       │
+
+&#x20;                        │    ARM7         │
+
+&#x20;                        └──────┬──────┘
+
+&#x20;                                 │
+
+&#x20;         ┌──────────┬───────┼────────┬────────┐
+
+&#x20;         │             │         │          │          │
+
+&#x20;         ▼          ▼           ▼          ▼          ▼
+
+&#x20;       LCD        Keypad        RTC        ADC        EINT
+
+&#x20;                                            │       Pause / Resume
+
+&#x20;                                           LM35
+
+&#x20;                                            │
+
+&#x20;                                            ▼
+
+&#x20;                                     Temperature
+
+&#x20;                                     Monitoring
+
+
+
+&#x20;                               ┌─────────────────┐
+
+&#x20;                               │ Exam Management      │
+
+&#x20;                               └────────┬────────┘
+
+&#x20;                                           │
+
+&#x20;                             ┌──────────┼──────────┐
+
+&#x20;                             ▼             ▼            ▼
+
+&#x20;                        7-Segment         LEDs       Buzzer
+
+&#x20;                        Remaining        Warnings    Exam End
+
+&#x20;                           Time
+
+```
+
+
+
+\---
+
+
+
+\## 📸 Project Demonstration
+
+
+
+\### 🔢 Keypad and LCD Display
+
+
+
+The 4×4 matrix keypad is used for user input and configuration, while the LCD displays system information, examination status, temperature, and other parameters.
+
+
+
+!\[Keypad and LCD Display](images/keypad\_and\_display.jpg)
+
+
+
+\### 🔧 Project Hardware
+
+
+
+The complete hardware setup of the Smart Exam Hall Monitoring and Management System.
+
+
+
+!\[Project Hardware](images/project\_hardware.jpg)
+
+
+
+\### 🌡️ Temperature Display
+
+
+
+The LM35 temperature sensor is interfaced with the LPC2148 ADC, and the measured temperature is displayed on the LCD.
+
+
+
+!\[Temperature Display](images/temperature\_display.jpg)
+
+
+
+\---
+
+
+
+\## 📁 Project Structure
+
+
+
+```text
+
+Smart-Exam-Hall-Monitoring-System/
+
+│
+
+├── Smart\_Exam\_Hall\_Monitoring\_and\_Management\_System1.c
+
+├── project.c
+
+├── project.h
+
+├── project\_declaration.h
+
+├── project\_definations.c
+
+├── declaration.h
+
+├── all\_macro1.h
+
+├── system\_architecture.png
+
+├── project\_images/
+
+│   ├── keypad\_and\_display.jpg
+
+│   ├── project\_hardware.jpg
+
+│   └── temperature\_display.jpg
+
+└── README.md
+
+```
+
+
+
+\### File Description
+
+
+
+| File / Folder                                         | Purpose                                                                |
+
+| ----------------------------------------------------- | ---------------------------------------------------------------------- |
+
+| `Smart\_Exam\_Hall\_Monitoring\_and\_Management\_System1.c` | Main application logic and interrupt handling                          |
+
+| `project.c`                                           | LCD, keypad, ADC, LM35, delay and 7-segment driver implementations     |
+
+| `project.h`                                           | Function declarations for peripheral modules                           |
+
+| `project\_declaration.h`                               | Function declarations for exam-management and RTC functions            |
+
+| `project\_definations.c`                               | Password, RTC, exam configuration and exam-management functions        |
+
+| `declaration.h`                                       | Peripheral function declarations                                       |
+
+| `all\_macro1.h`                                        | Microcontroller definitions, data types, macros and pin configurations |
+
+| `system\_architecture.png`                             | System architecture diagram                                            |
+
+| `images/`                                             | Real project hardware and demonstration images                         |
+
+| `README.md`                                           | Project documentation                                                  |
+
+
+
+\### Major Modules
+
+
+
+\* \*\*LPC2148 ARM7\*\* – Main controller
+
+\* \*\*16×2 LCD\*\* – Displays time, date, temperature and examination information
+
+\* \*\*4×4 Matrix Keypad\*\* – User input and configuration
+
+\* \*\*RTC\*\* – Real-time clock and date management
+
+\* \*\*LM35 + ADC\*\* – Temperature monitoring
+
+\* \*\*External Interrupts\*\* – Configuration and pause/resume control
+
+\* \*\*2-Digit 7-Segment Display\*\* – Displays remaining examination time
+
+\* \*\*LED Warning System\*\* – Provides time-based visual warnings
+
+\* \*\*Buzzer\*\* – Provides examination completion alert
+
+\* \*\*Exam Management Logic\*\* – Handles start time, duration, pause/resume and remaining-time calculation
 
 
 
@@ -128,7 +354,7 @@ When the configuration interrupt is triggered:
 
 2\. The entered password is compared with the stored password.
 
-3\. The user gets limited attempts.
+3\. The user gets limited password attempts.
 
 4\. After successful authentication, the user can access the configuration menu.
 
@@ -138,15 +364,15 @@ The configuration menu provides options for:
 
 
 
-\- RTC time
+\* RTC time
 
-\- RTC date
+\* RTC date
 
-\- Examination start time
+\* Examination start time
 
-\- Examination duration
+\* Examination duration
 
-\- Password modification
+\* Password modification
 
 
 
@@ -162,11 +388,11 @@ The administrator can configure:
 
 
 
-\- Examination start hour
+\* Examination start hour
 
-\- Examination start minute
+\* Examination start minute
 
-\- Examination duration
+\* Examination duration
 
 
 
@@ -190,13 +416,23 @@ The remaining examination time is displayed using a \*\*two-digit multiplexed 7-
 
 
 
-The system calculates:
+The system calculates the remaining examination time as:
 
 
 
-Remaining Time = Exam Duration - Elapsed Time
+```text
 
-Paused time is excluded from the elapsed examination time.
+Remaining Time = Exam Duration - Effective Elapsed Time
+
+```
+
+
+
+The system also accounts for the paused duration so that the examination countdown does not decrease while the examination is paused.
+
+
+
+\---
 
 
 
@@ -212,11 +448,11 @@ When the pause interrupt occurs:
 
 
 
-The current examination time is recorded.
+\* The current examination time is recorded.
 
-The examination countdown is paused.
+\* The examination countdown is paused.
 
-The pause count is incremented.
+\* The pause count is incremented.
 
 
 
@@ -224,9 +460,9 @@ When the interrupt occurs again:
 
 
 
-The system resumes the examination.
+\* The examination resumes.
 
-The paused duration is excluded from the examination countdown.
+\* The paused duration is excluded from the examination countdown.
 
 
 
@@ -234,7 +470,11 @@ The LCD displays the pause count and current pause status.
 
 
 
-\##  🌡️ Temperature Monitoring
+\---
+
+
+
+\## 🌡️ Temperature Monitoring
 
 
 
@@ -242,39 +482,47 @@ An LM35 temperature sensor is connected to the LPC2148 ADC.
 
 
 
-The signal flow is:
+The temperature measurement process is:
 
 
 
-LM35
+```text
 
-&#x20; ↓
+LM35 Temperature Sensor
 
-Analog Voltage
+&#x20;         ↓
 
-&#x20; ↓
+&#x20;   Analog Voltage
 
-LPC2148 ADC
+&#x20;         ↓
 
-&#x20; ↓
+&#x20;     LPC2148 ADC
 
-ADC Conversion
+&#x20;         ↓
 
-&#x20; ↓
+&#x20;    ADC Conversion
 
-Temperature Calculation
+&#x20;         ↓
 
-&#x20; ↓
+&#x20;Temperature Calculation
 
-LCD Display
+&#x20;         ↓
+
+&#x20;     LCD Display
+
+```
 
 
 
-The temperature is displayed in degrees Celsius.
+The temperature is calculated and displayed in degrees Celsius.
 
 
 
-\##  🚦 LED Warning System
+\---
+
+
+
+\## 🚦 LED Warning System
 
 
 
@@ -282,27 +530,39 @@ The system provides visual warnings based on the remaining examination time.
 
 
 
-Remaining Time	Indicator
+| Remaining Time       | Indicator |
 
-More than 15 minutes	Normal
+| -------------------- | --------- |
 
-15 minutes or less	LED3
+| More than 15 minutes | Normal    |
 
-10 minutes or less	LED2
+| 15 minutes or less   | LED3      |
 
-5 minutes or less	LED1
+| 10 minutes or less   | LED2      |
 
-0 minutes	Buzzer
+| 5 minutes or less    | LED1      |
+
+| 0 minutes            | Buzzer    |
 
 
 
-\##  🔔 Examination Completion
+The LED warning level changes automatically as the examination approaches completion.
+
+
+
+\---
+
+
+
+\## 🔔 Examination Completion
 
 
 
 When the remaining examination time reaches zero:
 
 
+
+```text
 
 Remaining Time = 0
 
@@ -314,107 +574,23 @@ Remaining Time = 0
 
 &#x20;     Buzzer
 
+```
+
 
 
 The buzzer provides an audio indication that the examination session has finished.
 
 
 
-\##  🧩 System Architecture
-
-&#x20;                  
-
-&#x20;                   ┌─────────────┐
-
-&#x20;                   │       LPC2148   │
-
-&#x20;                   │        ARM7     │
-
-&#x20;                   └───────┬─────┘
-
-&#x20;                             │
-
-&#x20;      ┌────────┬─────┼──────┬───────────┐
-
-&#x20;      │          │       │        │              │
-
-&#x20;      ▼          ▼       ▼        ▼              ▼
-
-&#x20;    LCD         Keypad   RTC      ADC            EINT
-
-&#x20;      │           │       │        │              │
-
-&#x20;      │           │       │       LM35       Pause / Resume
-
-&#x20;      │           │       │
-
-&#x20;      └─────────┴─────┴───────────┐
-
-&#x20;                                          │
-
-&#x20;                                          ▼
-
-&#x20;                                       Exam Management
-
-&#x20;                                          │
-
-&#x20;                             ┌─────────┼──────────────────┐
-
-&#x20;                             ▼           ▼                       ▼
-
-&#x20;                        7-Segment        LEDs                    Buzzer
-
-&#x20;                      Remaining Time    Warnings               Exam End
+\---
 
 
 
-
-
-\##  📁 Project Structure
-
-Smart-Exam-Hall-Monitoring-System/
-
-│
-
-├── Smart\_Exam\_Hall\_Monitoring\_and\_Management\_System1.c
-
-├── project.c
-
-├── project.h
-
-├── project\_declaration.h
-
-├── project\_definations.c
-
-├── declaration.h
-
-├── all\_macro1.h
-
-└── README.md
-
-File Description
-
-File	Purpose
-
-Smart\_Exam\_Hall\_Monitoring\_and\_Management\_System1.c	Main application logic and interrupt handling
-
-project.c	LCD, keypad, ADC, LM35, delay and 7-segment driver implementations
-
-project.h	Function declarations for peripheral modules
-
-project\_declaration.h	Function declarations for exam-management and RTC functions
-
-project\_definations.c	Password, RTC, exam configuration and exam-management functions
-
-declaration.h	Peripheral function declarations
-
-all\_macro1.h	Microcontroller definitions, data types, macros and pin configurations
-
-README.md	Project documentation
+\## 🔄 Overall Working Flow
 
 
 
-\##  🔄 Overall Working Flow
+```text
 
 Power ON
 
@@ -478,11 +654,311 @@ Activate Buzzer
 
 Exam Completed
 
+```
 
 
 
+\---
 
-\##   📚 Embedded Concepts Demonstrated
+
+
+\## 🛠️ Build and Execution
+
+
+
+\### 1. Open the Project
+
+
+
+Open the project source files in \*\*Keil µVision\*\* with the appropriate ARM7/LPC2148 project configuration.
+
+
+
+\### 2. Configure the Target
+
+
+
+Select the target device and configure the project for the \*\*LPC2148 ARM7 microcontroller\*\*.
+
+
+
+\### 3. Add Source Files
+
+
+
+Make sure all required source and header files are included in the Keil project.
+
+
+
+\### 4. Compile the Project
+
+
+
+Build the project using the Keil build option and check for compilation errors and warnings.
+
+
+
+\### 5. Generate the HEX File
+
+
+
+Configure the project to generate the required `.hex` file after a successful build.
+
+
+
+\### 6. Program the Microcontroller
+
+
+
+Use a compatible LPC2148 programming/flashing tool to transfer the generated HEX file to the microcontroller.
+
+
+
+\### 7. Connect the Hardware
+
+
+
+Connect the LCD, keypad, RTC, LM35, 7-segment display, LEDs, buzzer, and external interrupt switches according to the project hardware configuration.
+
+
+
+\### 8. Run the System
+
+
+
+Power on the system and verify initialization, configuration, examination timing, temperature monitoring, pause/resume operation, LED warnings, and examination completion.
+
+
+
+\---
+
+
+
+\## 🧪 Testing and Verification
+
+
+
+Each major module was tested individually before integrating it into the complete system.
+
+
+
+| Module             | Test Performed      | Expected Result                                    |
+
+| ------------------ | ------------------- | -------------------------------------------------- |
+
+| LCD                | Display test        | Text and values displayed correctly                |
+
+| Keypad             | Key press test      | Correct key input detected                         |
+
+| RTC                | Time/date test      | Correct time and date displayed                    |
+
+| ADC + LM35         | Temperature test    | Temperature measured and displayed                 |
+
+| 7-Segment          | Countdown test      | Remaining time displayed correctly                 |
+
+| External Interrupt | Pause/resume test   | Examination pauses and resumes correctly           |
+
+| LEDs               | Warning test        | Correct LED activated according to remaining time  |
+
+| Buzzer             | Completion test     | Buzzer activates when examination ends             |
+
+| Password           | Authentication test | Configuration accessible only after valid password |
+
+
+
+\### Integrated Testing
+
+
+
+After individual module verification, the modules were integrated and tested as a complete system.
+
+
+
+The following complete flow was verified:
+
+
+
+```text
+
+Power ON
+
+&#x20;  ↓
+
+Peripheral Initialization
+
+&#x20;  ↓
+
+Password Authentication
+
+&#x20;  ↓
+
+Exam Configuration
+
+&#x20;  ↓
+
+Exam Start
+
+&#x20;  ↓
+
+Countdown
+
+&#x20;  ↓
+
+Temperature Monitoring
+
+&#x20;  ↓
+
+Pause / Resume
+
+&#x20;  ↓
+
+LED Warnings
+
+&#x20;  ↓
+
+Exam Completion
+
+&#x20;  ↓
+
+Buzzer Alert
+
+```
+
+
+
+\---
+
+
+
+\## 📸 Output and Demonstration
+
+
+
+The repository contains real project demonstration images showing the implemented hardware and system output.
+
+
+
+\### Keypad and LCD Output
+
+
+
+!\[Keypad and LCD Display](images/keypad\_and\_display.jpg)
+
+
+
+\### Complete Hardware Setup
+
+
+
+!\[Project Hardware](images/project\_hardware.jpg)
+
+
+
+\### Temperature Monitoring Output
+
+
+
+!\[Temperature Display](images/temperature\_display.jpg)
+
+
+
+These images provide visual evidence of the implemented hardware and system operation.
+
+
+
+\---
+
+
+
+\## ⚠️ Challenges Faced and Solutions
+
+
+
+\### 1. Multiplexed 7-Segment Display
+
+
+
+\*\*Challenge:\*\*
+
+Displaying the remaining examination time using a two-digit multiplexed 7-segment display requires continuous refreshing of both digits.
+
+
+
+\*\*Solution:\*\*
+
+Implemented multiplexing logic with appropriate timing and digit selection to provide a stable display.
+
+
+
+\### 2. Pause / Resume Timing
+
+
+
+\*\*Challenge:\*\*
+
+The examination countdown should not decrease while the examination is paused.
+
+
+
+\*\*Solution:\*\*
+
+The pause time is recorded and excluded from the effective elapsed examination time.
+
+
+
+\### 3. Temperature Measurement
+
+
+
+\*\*Challenge:\*\*
+
+The LM35 provides an analog voltage that must be converted into a meaningful temperature value.
+
+
+
+\*\*Solution:\*\*
+
+The ADC is used to convert the analog signal into a digital value, which is then processed to calculate the temperature.
+
+
+
+\### 4. External Interrupt Handling
+
+
+
+\*\*Challenge:\*\*
+
+Configuration and pause/resume operations must respond to external events without affecting normal system operation.
+
+
+
+\*\*Solution:\*\*
+
+External interrupts and the VIC interrupt controller are used to handle event-driven operations.
+
+
+
+\### 5. Multiple Peripheral Integration
+
+
+
+\*\*Challenge:\*\*
+
+Several peripherals must operate together while maintaining correct timing and system behavior.
+
+
+
+\*\*Solution:\*\*
+
+Each module was developed and tested individually before integrating the modules into the final application.
+
+
+
+\---
+
+
+
+\## 📚 Embedded Concepts Demonstrated
 
 
 
@@ -490,43 +966,47 @@ This project demonstrates practical implementation of:
 
 
 
-ARM7 microcontroller programming
+\* ARM7 microcontroller programming
 
-Embedded C
+\* Embedded C
 
-GPIO programming
+\* GPIO programming
 
-Register-level programming
+\* Register-level programming
 
-LCD interfacing
+\* LCD interfacing
 
-Matrix keypad interfacing
+\* Matrix keypad interfacing
 
-ADC interfacing
+\* ADC interfacing
 
-LM35 temperature sensing
+\* LM35 temperature sensing
 
-RTC programming
+\* RTC programming
 
-External interrupts
+\* External interrupts
 
-VIC interrupt configuration
+\* VIC interrupt configuration
 
-Multiplexed 7-segment display
+\* Multiplexed 7-segment display
 
-Bit manipulation
+\* Bit manipulation
 
-Embedded timing and delays
+\* Embedded timing and delays
 
-Password-based access control
+\* Password-based access control
 
-Real-time event handling
+\* Real-time event handling
+
+\* Modular peripheral integration
 
 
 
+\---
 
 
-\##  🚀 Future Improvements
+
+\## 🚀 Future Improvements
 
 
 
@@ -534,27 +1014,31 @@ Possible future improvements include:
 
 
 
-Multiple examination hall support
+\* Multiple examination hall support
 
-Centralized monitoring through CAN or UART
+\* Centralized monitoring through CAN or UART
 
-Data logging
+\* Data logging
 
-EEPROM-based password and configuration storage
+\* EEPROM-based password and configuration storage
 
-Automatic attendance integration
+\* Automatic attendance integration
 
-PC/mobile monitoring interface
+\* PC/mobile monitoring interface
 
-Real-time examination reports
-
-
-
-\##  👨‍💻 Author
+\* Real-time examination reports
 
 
 
-Mahesh Gaigula
+\---
+
+
+
+\## 👨‍💻 Author
+
+
+
+\*\*Mahesh Gaigula\*\*
 
 
 
@@ -564,13 +1048,19 @@ Embedded Systems
 
 
 
-\##  📌 Project Type
+\---
 
 
 
-Embedded Systems Project — ARM7 / LPC2148
+\## 📌 Project Type
+
+
+
+\*\*Embedded Systems Project — ARM7 / LPC2148\*\*
 
 
 
 The project was developed as a practical embedded-system application integrating multiple hardware peripherals and real-time event management.
+
+
 
